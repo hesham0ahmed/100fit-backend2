@@ -1,6 +1,18 @@
-const stripe = require('stripe')('sk_test_51NqzFzGR0qiHEMczUfzPtMDasaxfuRHwVzpmDH52nou7i04binIIbgK7D7Ia8m1rz6hSguvnqd2Ni6uoERhpLgWk00IOD3fyWE');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const cors = require('cors');
 
-module.exports = async (req, res) => {
+const corsMiddleware = cors({
+  origin: 'https://hesham0ahmed.github.io', // Allow your frontend origin
+  methods: ['POST', 'OPTIONS'], // Allow specific methods
+  allowedHeaders: ['Content-Type'], // Allow specific headers
+});
+
+const handler = async (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   if (req.method === 'POST') {
     const items = req.body.items;
     try {
@@ -12,7 +24,7 @@ module.exports = async (req, res) => {
         price_data: {
           currency: 'eur',
           product_data: {
-            images: ['https://hesham0ahmed.github.io/201FiftyFour/assets/delte1.jpg'], // Corrected image URL
+            images: ['https://hesham0ahmed.github.io/201FiftyFour/assets/delte1.jpg'],
             name: `Package ${item.package}`,
             description: `||BENEFITS||: ${item.healthy.join(', ')} ||PROTEINS||: ${item.proteins.join(', ')} ||TOPPINGS||: ${item.toppings.join(', ')} ||FLAVOURS||: ${item.flavours.join(', ')} ||TEXTURE||: ${item.texture}`
           },
@@ -45,4 +57,8 @@ module.exports = async (req, res) => {
     res.setHeader('Allow', ['POST']);
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
+};
+
+module.exports = (req, res) => {
+  corsMiddleware(req, res, () => handler(req, res));
 };
