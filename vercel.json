@@ -6,13 +6,19 @@
       "use": "@vercel/node"
     }
   ],
+  "routes": [
+    {
+      "src": "/api/checkout",
+      "dest": "/api/checkout.js"
+    }
+  ],
   "headers": [
     {
       "source": "/api/checkout",
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; img-src 'self' https://q.stripe.com https://js.stripe.com https://stripe-camo.global.ssl.fastly.net https://d1wqzb5bdbcre6.cloudfront.net https://qr.stripe.com https://your-bucket-name.s3.amazonaws.com;"
+          "value": "default-src 'self'; img-src 'self' https://q.stripe.com https://js.stripe.com https://stripe-camo.global.ssl.fastly.net https://d1wqzb5bdbcre6.cloudfront.net https://qr.stripe.com https://raw.githubusercontent.com/hesham0ahmed/201FiftyFour/main/assets/delte1.jpg;"
         }
       ]
     }
